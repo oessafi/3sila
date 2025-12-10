@@ -1,6 +1,5 @@
 package org.devoir.restaurantservice.dto;
 
-
 import lombok.Data;
 
 @Data

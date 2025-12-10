@@ -2,20 +2,21 @@ package org.devoir.restaurantservice.repository;
 
 import org.devoir.restaurantservice.model.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@RepositoryRestResource(path = "restaurants")
+@Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
-    // C'est la méthode manquante qui cause votre erreur actuelle
+    // Correction : Utilisation de @Query pour éviter l'erreur de parsing JPA avec "is"
+    @Query("SELECT r FROM Restaurant r WHERE r.isOpen = true AND r.isActive = true")
     List<Restaurant> findByIsOpenTrueAndIsActiveTrue();
 
-    // Méthodes mises à jour pour correspondre aux nouveaux noms de champs de l'Entité
-    // (remplace findByAvailableTrue)
+    // Alternative si vous avez besoin de chercher seulement par ouverture
+    @Query("SELECT r FROM Restaurant r WHERE r.isOpen = true")
     List<Restaurant> findByIsOpenTrue();
 
-    // (remplace findByCuisine)
     List<Restaurant> findByCuisineType(String cuisineType);
 }
